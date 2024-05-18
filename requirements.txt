@@ -1,0 +1,8 @@
+cryptography
+psutil
+wxPython
+requests
+ObjectListView
+pubsub
+Pypubsub
+pyodbc
