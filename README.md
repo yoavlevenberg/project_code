@@ -2,10 +2,15 @@
 
 Double Task Manager is a computer managment app that gives you controll over all process that run on devices in your network.
 
-## Install
+## Download
 - On your server (The manager's computer) copy the direcotrys ```./all``` and ```./server```. Make sure they are both located in the smae directory!
 - On your client (A computer that is being controled by your server) copy the direcotrys ```./all``` and ```./client```. Make sure they are both located in the smae directory!
 
+## Install
+- CD into the directory where ```requirements.txt``` is located. Use the command:
+  ```bash
+  pip install -r requirements.txt
+  ```
 ## Run
 - On your server:
   - CD into the directory where the ```./server``` and ```./all``` dirs are located
