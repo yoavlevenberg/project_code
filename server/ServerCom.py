@@ -49,8 +49,8 @@ class ServerCom:
 
                 # Handle data from a client socket
                 try:
-                    length_of_data = int(this_socket.recv(5).decode()) # Expecting the length of the data
-                    data = this_socket.recv(length_of_data) # Receive the actual data
+                    length_of_data = int(this_socket.recv(5).decode())  # Expecting the length of the data
+                    data = this_socket.recv(length_of_data)  # Receive the actual data
                     client_key = self.open_clients[this_socket][1]  # get the key using the socket
                     decrypted_data = client_key.decrypt(data)  # Decrypt the received message
                 except Exception as e:
@@ -70,7 +70,7 @@ class ServerCom:
         :param client_socket: The socket object of the client to disconnect.
         """
         if client_socket in self.open_clients.keys():
-            self.recv_msg_q.put((self.open_clients[client_socket][0],"disconnect"))
+            self.recv_msg_q.put((self.open_clients[client_socket][0], "disconnect"))
             print(f"{self.open_clients[client_socket][0]} - Disconnected")
             del self.open_clients[client_socket]  # Remove the client from the open clients dictionary
             client_socket.close()  # Close the client socket
@@ -82,9 +82,9 @@ class ServerCom:
         :param ip: The IP address of the client.
         :return: The socket object for the given IP, or None if not found.
         """
-        for s, client_info in self.open_clients.items():
+        for i, client_info in self.open_clients.items():
             if client_info[0] == ip:
-                return s
+                return i
         return None
 
     def send_msg(self, ip, msg):
@@ -129,7 +129,6 @@ class ServerCom:
             shared_key = EncDec.set_key(private_key_a, b)
             self.open_clients[client] = [ip, shared_key]
             print(f"{ip} - Finished key exchange")
-
 
     def disconnect_client(self, ip):
         """

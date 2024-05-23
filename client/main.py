@@ -8,7 +8,6 @@ from all.process import Process
 import requests
 import time
 from ClientProtocol import ClientProtocol
-from ClientDB import ClientDB
 
 
 # ----------------------------------------------------------------------

@@ -9,7 +9,7 @@ import login
 from pubsub import pub
 
 
-computers = {}#computers[ip] = [mac,graphic]
+computers = {}  #computers[ip] = [mac,graphic]
 
 
 def handle_get_mac(ip, comm, myDB, params):
@@ -65,25 +65,19 @@ def handle_get_process_details(ip, comm, myDB, params):
         for proc in procs:
             name, pid, user, cwd, cpu, mem, io, threads = proc.split(',')
 
-            newProc = Process(name, pid, user, cwd, cpu , mem , io, threads)
+            newProc = Process(name, pid, user, cwd, cpu, mem, io, threads)
             if float(cpu) > float(cpu_limit) or float(mem) > float(memory_limit):
                 bad_process.append(newProc)
             else:
                 good_process.append(newProc)
 
-        # call to graphic wuth data
+        # call to graphic
 
-        wx.CallAfter(pub.sendMessage, f"update-{computers[ip][0]}", good_procs = good_process, bad_procs=bad_process, total_cpu=total_cpu, total_mem=total_mem)
-
+        wx.CallAfter(pub.sendMessage, f"update-{computers[ip][0]}", good_procs=good_process,
+                     bad_procs=bad_process, total_cpu=total_cpu, total_mem=total_mem)
 
         status = len(bad_process) > 0
         wx.CallAfter(pub.sendMessage, "bad comp", computer_name=computers[ip][0], status=status)
-
-
-
-
-
-
 
 
 recv_commands = { "01":handle_get_mac, "03": handle_get_process_details}
@@ -110,7 +104,6 @@ def handle_msgs(my_server, msg_q):
 
 def build_key(my_server, msg_q):
     pass
-
 
 
 if __name__ == '__main__':

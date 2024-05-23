@@ -4,6 +4,8 @@ from ObjectListView import ObjectListView, ColumnDefn
 from pubsub import pub
 from DB import DB
 from server_protocol import server_protocol
+import requests
+import webbrowser
 
 
 class SetLimitsDialog(wx.Dialog):
@@ -152,7 +154,7 @@ class MainPanel(wx.Panel):
             menu.AppendSeparator()
 
 
-            for option in ["info", "kill process", "close"]:
+            for option in ["search online", "kill process", "close"]:
                 menu_item = menu.Append(wx.ID_ANY, option)
                 self.Bind(wx.EVT_MENU, self.onStuff, menu_item)
 
@@ -163,6 +165,18 @@ class MainPanel(wx.Panel):
             self.setProcs()
 
         # ----------------------------------------------------------------------
+    def internet_connection(self):
+        """"
+        checks if able to connect to thr internet
+        """
+        try:
+            response = requests.get("https://www.tutorialspoint.com", timeout=5)
+
+            return True
+
+        except requests.ConnectionError:
+            return False
+
 
     def onStuff(self, event):
         """Handle selection from the context menu."""
@@ -172,10 +186,15 @@ class MainPanel(wx.Panel):
         item = menu.FindItemById(menuItemId)
         text = item.GetItemLabel()  # Use GetItemLabel to get the text of the menu item
 
-        if text == "info" and self.currentProcess is not None:
+        if text == "search online" and self.currentProcess is not None:
             # Display the process info in a popup window or message box
-            info = f"PID: {self.currentProcess.pid}, Name: {self.currentProcess.name}"
-            wx.MessageBox(info, "Process Info", wx.OK | wx.ICON_INFORMATION)
+            if self.internet_connection():
+
+                url = f"https://www.google.com/search?q={self.currentProcess.name}"
+
+                webbrowser.open(url)
+            else:
+                wx.MessageBox("The Internet is not connected.","info", wx.OK | wx.ICON_INFORMATION)
 
         elif text == "kill process" and self.currentProcess is not None:
             # Attempt to kill the selected process
